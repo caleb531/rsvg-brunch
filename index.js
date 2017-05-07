@@ -22,7 +22,7 @@ class RsvgPlugin {
     try {
       this.Rsvg = require('librsvg').Rsvg;
     } catch (error) {
-      logger.warn('librsvg not installed; please install global utility to use rsvg-convert');
+      logger.warn('please install system-wide librsvg to use rsvg-brunch');
     }
   }
 
