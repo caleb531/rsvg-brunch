@@ -27,7 +27,7 @@ sudo yum install librsvg2-devel
 
 ### 2. Set plugin options
 
-In `brunch-config.js`, you must  options which should be passed to the
+In `brunch-config.js`, you can provide options which should be passed to the
 plugin. 
 
 ```js
