@@ -25,6 +25,12 @@ sudo apt-get install librsvg2-dev
 sudo yum install librsvg2-devel
 ```
 
+#### Windows
+
+See [this blog post][librsvg-win] for librsvg Windows binaries.
+
+[librsvg-win]: http://opensourcepack.blogspot.com/2012/06/rsvg-convert-svg-image-conversion-tool.html
+
 ### 2. Set plugin options
 
 In `brunch-config.js`, you can provide options which should be passed to the
