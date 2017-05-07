@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/caleb531/rsvg-brunch#readme",
   "devDependencies": {
-    "eslint": "^3.19.0"
+    "eslint": "^3.19.0",
+    "loggy": "^1.0.2",
+    "mkdir-recursive": "^0.3.0"
   },
   "dependencies": {
     "librsvg": "^0.7.0"
