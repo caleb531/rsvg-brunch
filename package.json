@@ -1,0 +1,30 @@
+{
+  "name": "rsvg-brunch",
+  "version": "0.1.0",
+  "description": "A Brunch plugin for librsvg",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/caleb531/rsvg-brunch.git"
+  },
+  "keywords": [
+    "brunch",
+    "rsvg",
+    "librsvg",
+    "svg"
+  ],
+  "author": "Caleb Evans",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/caleb531/rsvg-brunch/issues"
+  },
+  "homepage": "https://github.com/caleb531/rsvg-brunch#readme",
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "librsvg": "^0.7.0"
+  }
+}
