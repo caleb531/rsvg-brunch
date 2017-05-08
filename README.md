@@ -87,3 +87,20 @@ variables are:
 - `{width}` (alias: `{w}`)
 - `{height}` (alias: `{h}`)
 - `{format}` (alias: `{f}`)
+
+### Configure Travis CI (if necessary)
+
+Because rsvg-brunch requires librsvg to be installed, you'll need to add the
+following to your `.travis.yml` if you use Travis CI:
+
+```yml
+addons:
+  apt:
+    sources:
+    - ubuntu-toolchain-r-test
+    packages:
+    - g++-4.8
+    - librsvg2-dev
+env:
+  - CXX=g++-4.8
+```
