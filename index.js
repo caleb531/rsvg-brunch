@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const logger = require('loggy');
-const mkdirpSync = require('mkdir-recursive').mkdirSync;
+const mkdirpSync = require('mkdirp').sync;
 const promiseReflect = require('promise-reflect');
 
 class RsvgPlugin {
