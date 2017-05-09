@@ -102,8 +102,7 @@ class RsvgPlugin {
       outputPromises.push(outputPromise);
     });
     Promise.all(outputPromises.map(promiseReflect))
-      .then(() => this.displayConversionResults(conversion, numResolved))
-      .catch(() => this.displayConversionResults(conversion, numResolved));
+      .then(() => this.displayConversionResults(conversion, numResolved));
   }
 
   // Generate icons after every Brunch build
