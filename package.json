@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "librsvg": "^0.7.0",
-    "mkdir-recursive": "^0.3.0"
+    "mkdir-recursive": "^0.3.0",
+    "promise-reflect": "^1.1.0"
   }
 }

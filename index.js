@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('loggy');
 const mkdirpSync = require('mkdir-recursive').mkdirSync;
+const promiseReflect = require('promise-reflect');
 
 class RsvgPlugin {
 
@@ -48,34 +49,61 @@ class RsvgPlugin {
 
   // Convert the given SVG to the output file witht the specified parameters
   convertSvg(inputPath, outputFile) {
-    let svg = new this.Rsvg();
-    svg.on('finish', () => {
-      mkdirpSync(path.dirname(outputFile.path));
-      fs.writeFileSync(outputFile.path, svg.render({
-        format: outputFile.format,
-        width: outputFile.width,
-        height: outputFile.height,
-        id: outputFile.id
-      }).data);
+    return new Promise((resolve, reject) => {
+      let svg = new this.Rsvg();
+      svg.on('finish', () => {
+        mkdirpSync(path.dirname(outputFile.path));
+        try {
+          fs.writeFileSync(outputFile.path, svg.render({
+            format: outputFile.format,
+            width: outputFile.width,
+            height: outputFile.height,
+            id: outputFile.id
+          }).data);
+          resolve();
+        } catch (error) {
+          reject(error);
+        }
+      });
+      fs.createReadStream(inputPath).pipe(svg);
     });
-    fs.createReadStream(inputPath).pipe(svg);
   }
 
   // Generate the given output file for the given input path
-  handleOutput(conversion, outputFile) {
+  extendOutputProps(conversion, outputFile) {
     outputFile = Object.assign({}, this.globalOutputDefaults, conversion.outputDefaults, outputFile);
     this.addMissingOutputDimensions(outputFile);
     this.evaluatePathVariables(outputFile);
-    this.convertSvg(conversion.input, outputFile);
+    return outputFile;
+  }
+
+  displayOutputError(outputFile, outputError) {
+    logger.error(`[rsvg-brunch] failed to generate ${outputFile.path} (${outputError})`);
+  }
+
+  displayConversionResults(conversion, numResolved) {
+    logger.info(`[rsvg-brunch] generated ${numResolved} icon(s) from ${path.basename(conversion.input)}`);
   }
 
   // Generate icons from the given conversion config; each conversion has one
   // SVG input and one or more outputs
   handleConversion(conversion) {
+    // A temporary container to store output promises until they can be passed
+    // to Promise.all
+    let outputPromises = [];
+    // The number of successful outputs for this conversion
+    let numResolved = 0;
     conversion.output.forEach((outputFile) => {
-      this.handleOutput(conversion, outputFile);
+      outputFile = this.extendOutputProps(conversion, outputFile);
+      let outputPromise = this.convertSvg(conversion.input, outputFile);
+      outputPromise
+        .then(() => numResolved += 1)
+        .catch((error) => this.displayOutputError(outputFile, error));
+      outputPromises.push(outputPromise);
     });
-    logger.info(`generated ${conversion.output.length} icon(s) from ${path.basename(conversion.input)}`);
+    Promise.all(outputPromises.map(promiseReflect))
+      .then(() => this.displayConversionResults(conversion, numResolved))
+      .catch(() => this.displayConversionResults(conversion, numResolved));
   }
 
   // Generate icons after every Brunch build

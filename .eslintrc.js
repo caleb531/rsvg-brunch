@@ -131,8 +131,6 @@ module.exports = {
     'no-proto': ['error'],
     // disallow variable redeclaration
     'no-redeclare': ['error', {'builtinGlobals': true}],
-    // disallow assignment operators in return statements
-    'no-return-assign': ['error', 'always'],
     // disallow assignments where both sides are exactly the same
     'no-self-assign': ['error'],
     // disallow comparisons where both sides are exactly the same
