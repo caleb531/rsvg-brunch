@@ -1,8 +1,11 @@
 'use strict';
 
+const path = require('path');
+const fs = require('fs');
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
+const tmp = require('tmp');
 const Plugin = require('.');
 
 describe('rsvg-brunch', function () {
@@ -138,6 +141,48 @@ describe('rsvg-brunch', function () {
     const plugin = new Plugin(defaultConfig);
     expect(plugin.extendOutputProps(conversion, conversion.output[0]))
       .to.have.property('path', 'public/output-foo.png');
+  });
+
+  it('should resolve conversion with correct parameters', function (done) {
+    const outputFile = {
+      format: 'png',
+      width: 200,
+      height: 100,
+      path: path.join(
+        tmp.dirSync().name,
+        tmp.tmpNameSync({template: 'XXXXXX.png'})
+      )
+    };
+    const plugin = new Plugin(defaultConfig);
+    const outputPromise = plugin.convertSvg('input.svg', outputFile);
+    outputPromise.then(() => {
+      expect(fs.existsSync(outputFile.path)).to.be.true;
+      fs.unlinkSync(outputFile.path);
+      done();
+    }).catch(() => {
+      done(new Error('expected promise to resolve, but rejected instead'));
+    });
+  });
+
+  it('should reject conversion with invalid parameters', function (done) {
+    const outputFile = {
+      format: 'png',
+      // width cannot be zero; will cause librsvg to throw an error
+      width: 0,
+      height: 100,
+      path: path.join(
+        tmp.dirSync().name,
+        tmp.tmpNameSync({template: 'XXXXXX.png'})
+      )
+    };
+    const plugin = new Plugin(defaultConfig);
+    const outputPromise = plugin.convertSvg('input.svg', outputFile);
+    outputPromise.then(() => {
+      done(new Error('expected promise to reject, but resolved instead'));
+    }).catch(() => {
+      expect(fs.existsSync(outputFile.path)).to.be.false;
+      done();
+    });
   });
 
 });
