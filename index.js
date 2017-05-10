@@ -69,7 +69,8 @@ class RsvgPlugin {
     });
   }
 
-  // Generate the given output file for the given input path
+  // Extend the properties and values of the given output file config, filling
+  // in missing information and such
   extendOutputProps(conversion, outputFile) {
     outputFile = Object.assign({}, this.globalOutputDefaults, conversion.outputDefaults, outputFile);
     this.addMissingOutputDimensions(outputFile);
