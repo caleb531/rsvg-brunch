@@ -83,7 +83,7 @@ class RsvgPlugin {
   }
 
   displayConversionResults(conversion, numResolved) {
-    logger.info(`[rsvg-brunch] generated ${numResolved} icon(s) from ${path.basename(conversion.input)}`);
+    logger.info(`[rsvg-brunch] generated ${numResolved} of ${conversion.output.length} icon(s) from ${path.basename(conversion.input)}`);
   }
 
   // Generate icons from the given conversion config; each conversion has one
