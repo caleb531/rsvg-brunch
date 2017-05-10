@@ -41,10 +41,10 @@ class RsvgPlugin {
   // Evaluate path variables (like {width} and {height})
   evaluatePathVariables(outputFile) {
     outputFile.path = outputFile.path
-      .replace(/{w(idth)?}/gi, outputFile.width)
-      .replace(/{h(eight)?}/gi, outputFile.height)
-      .replace(/{f(ormat)?}/gi, outputFile.format)
-      .replace(/{i(d)?}/gi, outputFile.id);
+      .replace(/{width}/gi, outputFile.width)
+      .replace(/{height}/gi, outputFile.height)
+      .replace(/{format}/gi, outputFile.format)
+      .replace(/{id}/gi, outputFile.id);
   }
 
   // Convert the given SVG to the output file witht the specified parameters
