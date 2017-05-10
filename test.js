@@ -35,7 +35,6 @@ describe('rsvg-brunch', function () {
 
   it('should catch error if system librsvg is not installed', function () {
     let loggerWarnSpy = sinon.spy();
-    // Cause require('librsvg').Rsvg to throw an error
     let ProxiedPlugin = proxyquire('.', {
       librsvg: null,
       loggy: {warn: loggerWarnSpy}
