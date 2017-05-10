@@ -44,4 +44,56 @@ describe('rsvg-brunch', function () {
     sinon.assert.calledOnce(loggerWarnSpy);
   });
 
+  it('should apply output defaults', function () {
+    let conversion = {
+      input: 'input.svg',
+      outputDefaults: {format: 'abc', path: 'output.abc'},
+      output: [{width: 100}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('format', 'abc');
+  });
+
+  it('should allow output file to override defaults', function () {
+    let conversion = {
+      input: 'input.svg',
+      outputDefaults: {format: 'abc'},
+      output: [{width: 100, format: 'def', path: 'output.def'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('format', 'def');
+  });
+
+  it('should prepend public directory to output file path', function () {
+    let conversion = {
+      input: 'input.svg',
+      output: [{width: 100, path: 'output.png'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('path', 'public/output.png');
+  });
+
+  it('should supply output file height if missing', function () {
+    let conversion = {
+      input: 'input.svg',
+      output: [{width: 100, path: 'output.png'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('height', 100);
+  });
+
+  it('should supply output file width if missing', function () {
+    let conversion = {
+      input: 'input.svg',
+      output: [{height: 100, path: 'output.png'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('width', 100);
+  });
+
 });
