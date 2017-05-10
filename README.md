@@ -86,9 +86,9 @@ You will have noticed above that any of the output paths can contain references
 to that output file's width and height, enclosed in curly brackets. Available
 variables are:
 
-- `{width}` (alias: `{w}`)
-- `{height}` (alias: `{h}`)
-- `{format}` (alias: `{f}`)
+- `{width}`
+- `{height}`
+- `{format}`
 
 ### Configure Travis CI (if necessary)
 
