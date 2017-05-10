@@ -96,4 +96,48 @@ describe('rsvg-brunch', function () {
       .to.have.property('width', 100);
   });
 
+  it('should evaluate {width} path variable', function () {
+    const conversion = {
+      input: 'input.svg',
+      outputDefaults: {path: 'output-{width}.png'},
+      output: [{width: 200, height: 100}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('path', 'public/output-200.png');
+  });
+
+  it('should evaluate {height} path variable', function () {
+    const conversion = {
+      input: 'input.svg',
+      outputDefaults: {path: 'output-{height}.png'},
+      output: [{width: 200, height: 100}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('path', 'public/output-100.png');
+  });
+
+  it('should evaluate {format} path variable', function () {
+    const conversion = {
+      input: 'input.svg',
+      outputDefaults: {path: 'output.{format}'},
+      output: [{width: 200, height: 100, format: 'abc'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('path', 'public/output.abc');
+  });
+
+  it('should evaluate {id} path variable', function () {
+    const conversion = {
+      input: 'input.svg',
+      outputDefaults: {path: 'output-{id}.png'},
+      output: [{width: 200, height: 100, id: 'foo'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('path', 'public/output-foo.png');
+  });
+
 });
