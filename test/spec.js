@@ -6,7 +6,7 @@ const expect = require('chai').expect;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
 const tmp = require('tmp');
-const Plugin = require('.');
+const Plugin = require('../');
 
 describe('rsvg-brunch', function () {
 
@@ -38,7 +38,7 @@ describe('rsvg-brunch', function () {
 
   it('should catch error if system librsvg is not installed', function () {
     const loggerWarnSpy = sinon.spy();
-    const ProxiedPlugin = proxyquire('.', {
+    const ProxiedPlugin = proxyquire('../', {
       librsvg: null,
       loggy: {warn: loggerWarnSpy}
     });
@@ -154,7 +154,7 @@ describe('rsvg-brunch', function () {
       )
     };
     const plugin = new Plugin(defaultConfig);
-    const outputPromise = plugin.convertSvg('input.svg', outputFile);
+    const outputPromise = plugin.convertSvg('test/input.svg', outputFile);
     outputPromise.then(() => {
       expect(fs.existsSync(outputFile.path)).to.be.true;
       fs.unlinkSync(outputFile.path);
@@ -176,7 +176,7 @@ describe('rsvg-brunch', function () {
       )
     };
     const plugin = new Plugin(defaultConfig);
-    const outputPromise = plugin.convertSvg('input.svg', outputFile);
+    const outputPromise = plugin.convertSvg('test/input.svg', outputFile);
     outputPromise.then(() => {
       done(new Error('expected promise to reject, but resolved instead'));
     }).catch(() => {
