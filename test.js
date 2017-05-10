@@ -3,7 +3,6 @@
 const expect = require('chai').expect;
 const sinon = require('sinon');
 const proxyquire = require('proxyquire');
-const logger = require('loggy');
 const Plugin = require('.');
 
 describe('rsvg-brunch', function () {
@@ -35,17 +34,15 @@ describe('rsvg-brunch', function () {
   });
 
   it('should catch error if system librsvg is not installed', function () {
-    const origLoggerWarn = logger.warn;
-    logger.warn = sinon.spy();
-    try {
-      // Cause require('librsvg').Rsvg to throw an error
-      let ProxiedPlugin = proxyquire('.', {librsvg: null});
-      const plugin = new ProxiedPlugin(defaultConfig);
-      expect(plugin).not.to.have.property('Rsvg');
-      sinon.assert.calledOnce(logger.warn);
-    } finally {
-      logger.warn = origLoggerWarn;
-    }
+    let loggerWarnSpy = sinon.spy();
+    // Cause require('librsvg').Rsvg to throw an error
+    let ProxiedPlugin = proxyquire('.', {
+      librsvg: null,
+      loggy: {warn: loggerWarnSpy}
+    });
+    const plugin = new ProxiedPlugin(defaultConfig);
+    expect(plugin).not.to.have.property('Rsvg');
+    sinon.assert.calledOnce(loggerWarnSpy);
   });
 
 });
