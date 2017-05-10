@@ -3,6 +3,8 @@
 *Copyright 2017, Caleb Evans*  
 *Released under the MIT License*
 
+[![Build Status](https://travis-ci.org/caleb531/rsvg-brunch.svg?branch=master)](https://travis-ci.org/caleb531/rsvg-brunch)
+
 This plugin enables you to generate PNG icons of various sizes from one or more
 SVG files.
 
