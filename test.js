@@ -34,8 +34,8 @@ describe('rsvg-brunch', function () {
   });
 
   it('should catch error if system librsvg is not installed', function () {
-    let loggerWarnSpy = sinon.spy();
-    let ProxiedPlugin = proxyquire('.', {
+    const loggerWarnSpy = sinon.spy();
+    const ProxiedPlugin = proxyquire('.', {
       librsvg: null,
       loggy: {warn: loggerWarnSpy}
     });
@@ -45,7 +45,7 @@ describe('rsvg-brunch', function () {
   });
 
   it('should apply output defaults', function () {
-    let conversion = {
+    const conversion = {
       input: 'input.svg',
       outputDefaults: {format: 'abc', path: 'output.abc'},
       output: [{width: 100}]
@@ -56,7 +56,7 @@ describe('rsvg-brunch', function () {
   });
 
   it('should allow output file to override defaults', function () {
-    let conversion = {
+    const conversion = {
       input: 'input.svg',
       outputDefaults: {format: 'abc'},
       output: [{width: 100, format: 'def', path: 'output.def'}]
@@ -67,7 +67,7 @@ describe('rsvg-brunch', function () {
   });
 
   it('should prepend public directory to output file path', function () {
-    let conversion = {
+    const conversion = {
       input: 'input.svg',
       output: [{width: 100, path: 'output.png'}]
     };
@@ -77,7 +77,7 @@ describe('rsvg-brunch', function () {
   });
 
   it('should supply output file height if missing', function () {
-    let conversion = {
+    const conversion = {
       input: 'input.svg',
       output: [{width: 100, path: 'output.png'}]
     };
@@ -87,7 +87,7 @@ describe('rsvg-brunch', function () {
   });
 
   it('should supply output file width if missing', function () {
-    let conversion = {
+    const conversion = {
       input: 'input.svg',
       output: [{height: 100, path: 'output.png'}]
     };
