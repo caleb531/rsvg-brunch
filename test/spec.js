@@ -47,7 +47,17 @@ describe('rsvg-brunch', function () {
     sinon.assert.calledOnce(loggerWarnSpy);
   });
 
-  it('should apply output defaults', function () {
+  it('should apply global output defaults', function () {
+    const conversion = {
+      input: 'input.svg',
+      output: [{width: 100, path: 'output.png'}]
+    };
+    const plugin = new Plugin(defaultConfig);
+    expect(plugin.extendOutputProps(conversion, conversion.output[0]))
+      .to.have.property('format', 'png');
+  });
+
+  it('should apply conversion output defaults', function () {
     const conversion = {
       input: 'input.svg',
       outputDefaults: {format: 'abc', path: 'output.abc'},
