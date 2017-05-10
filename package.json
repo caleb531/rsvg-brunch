@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --reporter dot"
   },
   "repository": {
     "type": "git",
@@ -24,11 +24,16 @@
   },
   "homepage": "https://github.com/caleb531/rsvg-brunch#readme",
   "devDependencies": {
+    "chai": "^3.5.0",
     "eslint": "^3.19.0",
-    "loggy": "^1.0.2"
+    "mocha": "^3.3.0",
+    "proxyquire": "^1.7.11",
+    "sinon": "^2.2.0",
+    "tmp": "0.0.31"
   },
   "dependencies": {
     "librsvg": "^0.7.0",
+    "loggy": "^1.0.2",
     "mkdirp": "^0.5.1",
     "promise-reflect": "^1.1.0"
   }
