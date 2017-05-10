@@ -185,4 +185,8 @@ describe('rsvg-brunch', function () {
     });
   });
 
+  it('should be registered as Brunch plugin', function () {
+    expect(Plugin.prototype.brunchPlugin).to.be.true;
+  });
+
 });
