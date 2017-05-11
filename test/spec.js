@@ -167,8 +167,8 @@ describe('rsvg-brunch', function () {
         expect(fs.existsSync(outputFile.path)).to.be.true;
         fs.unlinkSync(outputFile.path);
         done();
-      }).catch(() => {
-        done(new Error('expected promise to resolve, but rejected instead'));
+      }).catch((error) => {
+        done(error);
       });
     });
 
