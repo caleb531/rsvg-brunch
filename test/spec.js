@@ -14,6 +14,14 @@ describe('rsvg-brunch', function () {
   // not explicitly overridden by the user
   const defaultConfig = {paths: {public: 'public'}};
 
+  function getLoggySpy() {
+    return {
+      info: sinon.spy(),
+      warn: sinon.spy(),
+      error: sinon.spy()
+    };
+  }
+
   it('should initialize with empty brunch config', function () {
     const plugin = new Plugin(defaultConfig);
     expect(plugin).to.be.ok;
@@ -37,14 +45,14 @@ describe('rsvg-brunch', function () {
   });
 
   it('should catch error if system librsvg is not installed', function () {
-    const loggerWarnSpy = sinon.spy();
+    const loggySpy = getLoggySpy();
     const ProxiedPlugin = proxyquire('../', {
       librsvg: null,
-      loggy: {warn: loggerWarnSpy}
+      loggy: loggySpy
     });
     const plugin = new ProxiedPlugin(defaultConfig);
     expect(plugin).not.to.have.property('Rsvg');
-    sinon.assert.calledOnce(loggerWarnSpy);
+    sinon.assert.calledOnce(loggySpy.warn);
   });
 
   describe('extendOutputProps', function () {
@@ -174,6 +182,64 @@ describe('rsvg-brunch', function () {
       }).catch(() => {
         expect(fs.existsSync(outputFile.path)).to.be.false;
         done();
+      });
+    });
+
+  });
+
+  describe('handleConversion', function () {
+
+    let conversion;
+    beforeEach(function () {
+      conversion = {
+        input: 'test/input.svg',
+        outputDefaults: {
+          path: path.join(
+            tmp.dirSync().name,
+            tmp.tmpNameSync({template: 'XXXXXX-{width}.png'})
+          )
+        },
+        output: [
+          {width: 32},
+          {width: 64},
+          {width: 128},
+          {width: 256},
+          {width: 384},
+          {width: 512}
+        ]
+      };
+    });
+
+    it('should display success message after all outputs finish', function (done) {
+      const loggySpy = getLoggySpy();
+      const ProxiedPlugin = proxyquire('../', {loggy: loggySpy});
+      const plugin = new ProxiedPlugin(defaultConfig);
+      const conversionPromise = plugin.handleConversion(conversion);
+      conversionPromise.then(() => {
+        sinon.assert.calledOnce(loggySpy.info);
+        sinon.assert.calledWith(loggySpy.info, sinon.match(/6 of 6/gi));
+        done();
+      }).catch((error) => {
+        done(error);
+      });
+    });
+
+    it('should display error for each unsuccessful output', function (done) {
+      const loggySpy = getLoggySpy();
+      const ProxiedPlugin = proxyquire('../', {loggy: loggySpy});
+      const plugin = new ProxiedPlugin(defaultConfig);
+      // Ensure that default extendOutputProps does not prepend /public
+      // plugin.extendOutputProps;
+      conversion.output[2].height = 0;
+      conversion.output[4].height = 0;
+      const conversionPromise = plugin.handleConversion(conversion);
+      conversionPromise.then(() => {
+        sinon.assert.calledTwice(loggySpy.error);
+        sinon.assert.calledWith(loggySpy.error, sinon.match(/128/gi));
+        sinon.assert.calledWith(loggySpy.error, sinon.match(/384/gi));
+        done();
+      }).catch((error) => {
+        done(error);
       });
     });
 

@@ -30,7 +30,10 @@ class RsvgPlugin {
   // Fill in either the width or the height (if either is missing) from the
   // given output file config
   addMissingOutputDimensions(outputFile) {
-    outputFile.path = path.join(this.publicPath, outputFile.path);
+    // Prepend public directory to output path if output path is relative path
+    if (outputFile.path[0] !== '/') {
+      outputFile.path = path.join(this.publicPath, outputFile.path);
+    }
     if (outputFile.width === undefined) {
       outputFile.width = outputFile.height;
     } else if (outputFile.height === undefined) {
