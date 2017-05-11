@@ -106,7 +106,7 @@ class RsvgPlugin {
     // if some promises are still in a pending state; using promiseReflect
     // ensures that the conversion results are displayed only when all promises
     // either resolve or reject (i.e. none are pending)
-    Promise.all(outputPromises.map(promiseReflect))
+    return Promise.all(outputPromises.map(promiseReflect))
       .then(() => this.displayConversionResults(conversion, numResolved));
   }
 
