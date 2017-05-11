@@ -27,13 +27,17 @@ class RsvgPlugin {
     }
   }
 
-  // Fill in either the width or the height (if either is missing) from the
-  // given output file config
-  addMissingOutputDimensions(outputFile) {
-    // Prepend public directory to output path if output path is relative path
+  // Prepend public directory to output path
+  prependPublicDirectoryPath(outputFile) {
+    // Only prepend directory path if output path is not an absolute path
     if (outputFile.path[0] !== '/') {
       outputFile.path = path.join(this.publicPath, outputFile.path);
     }
+  }
+
+  // Fill in either the width or the height (if either is missing) from the
+  // given output file config
+  addMissingOutputDimensions(outputFile) {
     if (outputFile.width === undefined) {
       outputFile.width = outputFile.height;
     } else if (outputFile.height === undefined) {
@@ -76,6 +80,7 @@ class RsvgPlugin {
   // in missing information and such
   extendOutputProps(conversion, outputFile) {
     outputFile = Object.assign({}, this.globalOutputDefaults, conversion.outputDefaults, outputFile);
+    this.prependPublicDirectoryPath(outputFile);
     this.addMissingOutputDimensions(outputFile);
     this.evaluatePathVariables(outputFile);
     return outputFile;
