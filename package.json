@@ -1,6 +1,6 @@
 {
   "name": "rsvg-brunch",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A Brunch plugin for librsvg",
   "main": "index.js",
   "scripts": {
