@@ -2,3 +2,5 @@
 .eslintrc.js
 .travis.yml
 test/
+coverage/
+.nyc_output/
