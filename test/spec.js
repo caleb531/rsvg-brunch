@@ -245,6 +245,43 @@ describe('rsvg-brunch', function () {
 
   });
 
+  describe('onCompile', function () {
+
+    let config;
+    beforeEach(function () {
+      config = {
+        plugins: {
+          rsvg: {
+            conversions: [
+              sinon.spy(),
+              sinon.spy(),
+              sinon.spy()
+            ]
+          }
+        }
+      };
+    });
+
+    it('should run conversions when librsvg is available', function () {
+      const plugin = new Plugin(Object.assign(defaultConfig, config));
+      plugin.handleConversion = sinon.spy();
+      plugin.onCompile();
+      const conversions = config.plugins.rsvg.conversions;
+      sinon.assert.calledWith(plugin.handleConversion, conversions[0]);
+      sinon.assert.calledWith(plugin.handleConversion, conversions[1]);
+      sinon.assert.calledWith(plugin.handleConversion, conversions[2]);
+    });
+
+    it('should not run conversions when librsvg is not available', function () {
+      const plugin = new Plugin(Object.assign(defaultConfig, config));
+      plugin.handleConversion = sinon.spy();
+      delete plugin.Rsvg;
+      plugin.onCompile();
+      sinon.assert.notCalled(plugin.handleConversion);
+    });
+
+  });
+
   it('should be registered as Brunch plugin', function () {
     expect(Plugin.prototype.brunchPlugin).to.be.true;
   });
