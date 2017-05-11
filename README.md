@@ -4,6 +4,7 @@
 *Released under the MIT License*
 
 [![Build Status](https://travis-ci.org/caleb531/rsvg-brunch.svg?branch=master)](https://travis-ci.org/caleb531/rsvg-brunch)
+[![Coverage Status](https://coveralls.io/repos/github/caleb531/rsvg-brunch/badge.svg?branch=master)](https://coveralls.io/github/caleb531/rsvg-brunch?branch=master)
 
 This plugin enables you to generate PNG icons of various sizes from one or more
 SVG files.
