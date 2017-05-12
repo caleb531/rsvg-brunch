@@ -2,8 +2,13 @@
 
 const path = require('path');
 const fs = require('fs');
-const expect = require('chai').expect;
+
+const chai = require('chai');
 const sinon = require('sinon');
+const sinonChai = require('sinon-chai');
+const expect = chai.expect;
+chai.use(sinonChai);
+
 const proxyquire = require('proxyquire');
 const tmp = require('tmp');
 const Plugin = require('../');
@@ -52,7 +57,7 @@ describe('rsvg-brunch', function () {
     });
     const plugin = new ProxiedPlugin(defaultConfig);
     expect(plugin).not.to.have.property('Rsvg');
-    sinon.assert.calledOnce(loggySpy.warn);
+    expect(loggySpy.warn).to.have.been.calledOnce;
   });
 
   describe('extendOutputProps', function () {
@@ -211,8 +216,8 @@ describe('rsvg-brunch', function () {
       const plugin = new ProxiedPlugin(defaultConfig);
       const conversionPromise = plugin.handleConversion(conversion);
       conversionPromise.then(() => {
-        sinon.assert.calledOnce(loggySpy.info);
-        sinon.assert.calledWith(loggySpy.info, sinon.match(/3 of 3/gi));
+        expect(loggySpy.info).to.have.been.calledOnce;
+        expect(loggySpy.info).to.have.been.calledWith(sinon.match(/3 of 3/gi));
         done();
       }).catch(done);
     });
@@ -226,8 +231,8 @@ describe('rsvg-brunch', function () {
       conversion.output[1].height = 0;
       const conversionPromise = plugin.handleConversion(conversion);
       conversionPromise.then(() => {
-        sinon.assert.calledOnce(loggySpy.error);
-        sinon.assert.calledWith(loggySpy.error, sinon.match(/64/gi));
+        expect(loggySpy.error).to.have.been.calledOnce;
+        expect(loggySpy.error).to.have.been.calledWith(sinon.match(/64/gi));
         done();
       }).catch(done);
     });
@@ -241,8 +246,8 @@ describe('rsvg-brunch', function () {
       conversion.output[1].height = 0;
       const conversionPromise = plugin.handleConversion(conversion);
       conversionPromise.then(() => {
-        sinon.assert.calledOnce(loggySpy.info);
-        sinon.assert.calledWith(loggySpy.info, sinon.match(/2 of 3/gi));
+        expect(loggySpy.info).to.have.been.calledOnce;
+        expect(loggySpy.info).to.have.been.calledWith(sinon.match(/2 of 3/gi));
         done();
       }).catch(done);
     });
@@ -271,9 +276,9 @@ describe('rsvg-brunch', function () {
       plugin.handleConversion = sinon.spy();
       plugin.onCompile();
       const conversions = config.plugins.rsvg.conversions;
-      sinon.assert.calledWith(plugin.handleConversion, conversions[0]);
-      sinon.assert.calledWith(plugin.handleConversion, conversions[1]);
-      sinon.assert.calledWith(plugin.handleConversion, conversions[2]);
+      expect(plugin.handleConversion).to.have.been.calledWith(conversions[0]);
+      expect(plugin.handleConversion).to.have.been.calledWith(conversions[1]);
+      expect(plugin.handleConversion).to.have.been.calledWith(conversions[2]);
     });
 
     it('should not run conversions when librsvg is not available', function () {
@@ -281,7 +286,7 @@ describe('rsvg-brunch', function () {
       plugin.handleConversion = sinon.spy();
       delete plugin.Rsvg;
       plugin.onCompile();
-      sinon.assert.notCalled(plugin.handleConversion);
+      expect(plugin.handleConversion).not.to.have.been.called;
     });
 
   });
