@@ -167,9 +167,7 @@ describe('rsvg-brunch', function () {
         expect(fs.existsSync(outputFile.path)).to.be.true;
         fs.unlinkSync(outputFile.path);
         done();
-      }).catch((error) => {
-        done(error);
-      });
+      }).catch(done);
     });
 
     it('should reject with invalid params', function (done) {
@@ -179,10 +177,10 @@ describe('rsvg-brunch', function () {
       const outputPromise = plugin.convertSvg('test/input.svg', outputFile);
       outputPromise.then(() => {
         done(new Error('expected promise to reject, but resolved instead'));
-      }).catch(() => {
+      }, () => {
         expect(fs.existsSync(outputFile.path)).to.be.false;
         done();
-      });
+      }).catch(done);
     });
 
   });
@@ -219,9 +217,7 @@ describe('rsvg-brunch', function () {
         sinon.assert.calledOnce(loggySpy.info);
         sinon.assert.calledWith(loggySpy.info, sinon.match(/6 of 6/gi));
         done();
-      }).catch((error) => {
-        done(error);
-      });
+      }).catch(done);
     });
 
     it('should display error for each unsuccessful output', function (done) {
@@ -238,9 +234,7 @@ describe('rsvg-brunch', function () {
         sinon.assert.calledWith(loggySpy.error, sinon.match(/128/gi));
         sinon.assert.calledWith(loggySpy.error, sinon.match(/384/gi));
         done();
-      }).catch((error) => {
-        done(error);
-      });
+      }).catch(done);
     });
 
   });
