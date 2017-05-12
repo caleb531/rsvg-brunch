@@ -200,10 +200,7 @@ describe('rsvg-brunch', function () {
         output: [
           {width: 32},
           {width: 64},
-          {width: 128},
-          {width: 256},
-          {width: 384},
-          {width: 512}
+          {width: 128}
         ]
       };
     });
@@ -215,7 +212,7 @@ describe('rsvg-brunch', function () {
       const conversionPromise = plugin.handleConversion(conversion);
       conversionPromise.then(() => {
         sinon.assert.calledOnce(loggySpy.info);
-        sinon.assert.calledWith(loggySpy.info, sinon.match(/6 of 6/gi));
+        sinon.assert.calledWith(loggySpy.info, sinon.match(/3 of 3/gi));
         done();
       }).catch(done);
     });
@@ -226,13 +223,11 @@ describe('rsvg-brunch', function () {
       const plugin = new ProxiedPlugin(defaultConfig);
       // Ensure that default extendOutputProps does not prepend /public
       // plugin.extendOutputProps;
-      conversion.output[2].height = 0;
-      conversion.output[4].height = 0;
+      conversion.output[1].height = 0;
       const conversionPromise = plugin.handleConversion(conversion);
       conversionPromise.then(() => {
-        sinon.assert.calledTwice(loggySpy.error);
-        sinon.assert.calledWith(loggySpy.error, sinon.match(/128/gi));
-        sinon.assert.calledWith(loggySpy.error, sinon.match(/384/gi));
+        sinon.assert.calledOnce(loggySpy.error);
+        sinon.assert.calledWith(loggySpy.error, sinon.match(/64/gi));
         done();
       }).catch(done);
     });
