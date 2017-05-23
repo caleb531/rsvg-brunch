@@ -90,6 +90,7 @@ variables are:
 - `{width}`
 - `{height}`
 - `{format}`
+- `{id}`
 
 ### Configure Travis CI (if necessary)
 
