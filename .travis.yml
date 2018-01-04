@@ -14,6 +14,9 @@ addons:
     - librsvg2-dev
 env:
   - CXX=g++-4.8
+install:
+  - npm install
+  - npm install coveralls
 script:
   - npm run lint
   - npm run coverage
