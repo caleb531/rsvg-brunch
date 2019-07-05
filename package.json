@@ -26,9 +26,9 @@
   "homepage": "https://github.com/caleb531/rsvg-brunch#readme",
   "devDependencies": {
     "chai": "^3.5.0",
-    "eslint": "^3.19.0",
-    "mocha": "^3.3.0",
-    "nyc": "^10.3.2",
+    "eslint": "^6.0.1",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "proxyquire": "^1.7.11",
     "sinon": "^2.2.0",
     "sinon-chai": "^2.10.0",
